@@ -1,4 +1,5 @@
 from django.contrib import admin
+
 from .models import Slack, Company, Office, OfficeUser
 
 admin.site.register(Slack)
