@@ -23,7 +23,7 @@ class Office(models.Model):
     office_name = models.CharField('Name of the office', max_length=100)
 
 
-class Employee(models.Model):
+class OfficeUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     offices = models.ManyToManyField(Office)
     slackid = models.CharField('Slack ID', max_length=100)
