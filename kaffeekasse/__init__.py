@@ -7,7 +7,7 @@ def get_name():
     return "Kaffeekasse"
 
 def get_link():
-    return ""
+    return "kaffeekasse"
 
 def get_welcome_widget():
     html = '<h4 class="center-align"><i class="mdi mdi-maps-local-cafe"></i>&nbsp;'+get_name()+'</h4>'

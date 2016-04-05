@@ -4,7 +4,7 @@ def get_name():
     return "Officecloud"
 
 def get_link():
-    return ""
+    return "index"
 
 def get_welcome_widget():
     return ""

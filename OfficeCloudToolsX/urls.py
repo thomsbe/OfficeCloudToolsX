@@ -20,6 +20,6 @@ from material.frontend import urls as frontend_urls
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'', include(frontend_urls)),
+    url(r'^', include('kaffeekasse.urls')),
     url(r'^', include('officecloud.urls')),
-    url(r'^kaffeekasse/', include('kaffeekasse.urls')),
 ]

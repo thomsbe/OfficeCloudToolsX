@@ -10,7 +10,10 @@ def index(request):
     office_cloud_apps = filter(lambda app: hasattr(app, 'IS_OFFICE_CLOUD'), apps)
     for app in office_cloud_apps:
         try:
-            widgets.append(app.get_welcome_widget)
+            widget = {}
+            widget['link'] = app.get_link
+            widget['html'] = app.get_welcome_widget
+            widgets.append(widget)
         except:
             pass
     return render(request, 'index.html', {'widgets': widgets})
