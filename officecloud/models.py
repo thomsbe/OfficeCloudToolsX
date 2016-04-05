@@ -12,10 +12,10 @@ class Slack(models.Model):
 
 class Company(models.Model):
     company_name = models.CharField('Name of the company', max_length=100, null=False, default='Companyname')
-    company_logo = models.CharField('URL of the company logo', max_length=255, null=True)
-    company_text = models.CharField('Some description of the company', max_length=255, null=True)
-    company_url = models.CharField('A url of the companys homepage', max_length=100, null=True)
-    company_slack = models.OneToOneField(Slack, null=True)
+    company_logo = models.ImageField('company logo', max_length=255, null=True, blank=True)
+    company_text = models.CharField('Some description of the company', max_length=255, null=True, blank=True)
+    company_url = models.CharField('A url of the companys homepage', max_length=100, null=True, blank=True)
+    company_slack = models.OneToOneField(Slack, null=True,  blank=True)
 
 
 class Office(models.Model):
@@ -26,5 +26,5 @@ class Office(models.Model):
 class OfficeUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     offices = models.ManyToManyField(Office)
-    slackid = models.CharField('Slack ID', max_length=100, null=True)
-    avatar = models.CharField('URL of a avatar img', max_length=255, null=True)
+    slackid = models.CharField('Slack ID', max_length=100, null=True, blank=True)
+    avatar = models.ImageField('avatar img', max_length=255, null=True, blank=True)
