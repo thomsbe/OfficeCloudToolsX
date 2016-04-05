@@ -28,3 +28,6 @@ class OfficeUser(models.Model):
     offices = models.ManyToManyField(Office)
     slackid = models.CharField('Slack ID', max_length=100, null=True, blank=True)
     avatar = models.ImageField('avatar img', max_length=255, null=True, blank=True)
+
+    def get_name(self):
+        return self.user.get_full_name()
