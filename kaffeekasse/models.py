@@ -15,9 +15,6 @@ class Attachment(models.Model):
     def __str__(self):
         return self.attachment_name
 
-    def __str__(self):
-        return self.attachment_name
-
 
 class Purchasing(models.Model):
     purchasing_name = models.CharField(max_length=100)
