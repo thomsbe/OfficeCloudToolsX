@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+from time import timezone
+
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -8,8 +10,7 @@ from officecloud.models import OfficeUser
 
 class Attachment(models.Model):
     attachment_name = models.CharField('Name of the attachment', max_length=255, null=False)
-    attachment_filename = models.ImageField('Path of the attachment', upload_to='attachments', max_length=255,
-                                            null=False)
+    attachment_filename = models.ImageField('Path of the attachment', max_length=255, null=False, upload_to='kaffeekasse/static/attachments/')
 
     def __str__(self):
         return self.attachment_name
@@ -37,7 +38,7 @@ class DebtStatus(models.Model):
 
 
 class Debt(models.Model):
-    dept_purchasing = models.ForeignKey(Purchasing)
+    debt_purchasing = models.ForeignKey(Purchasing)
     debt_creditor = models.ForeignKey(OfficeUser, related_name='debitor')
     debt_payer = models.ForeignKey(OfficeUser, related_name='creditor')
     debt_value = models.FloatField('Value of this debt')

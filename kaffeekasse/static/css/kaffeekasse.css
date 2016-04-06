@@ -1,0 +1,15 @@
+.relative {
+    position: relative;
+}
+
+.add-debtor {
+    position: absolute;
+    padding-left: 7px;
+    padding-right: 7px;
+    right: -5px;
+    top: -66px;
+}
+
+#id_debt_count_container {
+    display: none;
+}
