@@ -1,0 +1,98 @@
+{% extends 'material/frontend/base_module.html' %}
+
+{% block content %}
+{% load material_form %}
+{% load staticfiles %}
+<link href="{% static "css/kaffeekasse.css" %}" rel="stylesheet" type="text/css" media="screen" />
+<script src="{% static "js/kaffeekasse.js" %}"></script>
+<div class="row">
+    <div class="col m6">
+        <div class="card">
+            <div class="card-content">
+                <div class="row">
+                    <div class="col m12">
+                        <h4>Neuer Einkauf</h4>
+                        <form id="purchase_form" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {% form %}
+                                {% part form.purchasing_name prefix %}<i class="mdi-action-shopping-cart prefix"></i>{% endpart %}
+                                {% part form.purchasing_value prefix %}<i class="mdi-editor-attach-money prefix"></i>{% endpart %}
+                                {% part form.purchasing_date prefix %}<i class="mdi-action-event prefix"></i>{% endpart %}
+                                {% part form.purchasing_attachment_name prefix %}<i class="mdi-action-receipt prefix"></i>{% endpart %}
+                                {% part form.debtor_name prefix %}<i class="mdi-action-account-box prefix"></i>{% endpart %}
+                                {% part form.debt_amount prefix %}<i class="mdi-editor-attach-money prefix"></i>{% endpart %}
+                                {{ form.debt_count.as_hidden }}
+                            {% endform %}
+                            <div class="right relative">
+                                <div class="add-debtor btn" onclick="add_debtor_line()">
+                                    <i class="mdi-content-add"></i>
+                                </div>
+                                <button type="submit" name="_submit" class="btn">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col m6">
+        <div class="row">
+            <div class="m12">
+                <div class="card debt-card">
+                    <div class="card-content">
+                        <h4>Schulden</h4>
+                        <a class="waves-effect waves-light btn right debt-button debt-show-button" href="javascript: show_all_debts()"><i class="mdi-navigation-expand-more right"></i>Alle anzeigen</a>
+                        <a class="waves-effect waves-light btn right debt-button debt-hide-button" href="javascript: hide_all_debts()"><i class="mdi-navigation-expand-less right"></i>Geschlossene ausblenden</a>
+                        <ul class="collection debts">
+                        {% for debt in debts %}
+                            <li class="collection-item {{ debt.debt_status.status_ident }}">
+                                <div class="row">
+                                    <div class="col m4">{{ debt.debt_creditor }}</div>
+                                    <div class="col m4">{{ debt.debt_purchasing.purchasing_date }}</div>
+                                    <div class="col m2">{{ debt.debt_value }}</div>
+                                    <div class="col m1 {{ debt.debt_status.status_ident }}">{{ debt.debt_status.status_ident }}</div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="m12">
+                <div class="card claim-card">
+                    <div class="card-content">
+                        <h4>Forderungen</h4>
+                        <a class="waves-effect waves-light btn right debt-button claims-show-button" href="javascript: show_all_claims()"><i class="mdi-navigation-expand-more right"></i>Alle anzeigen</a>
+                        <a class="waves-effect waves-light btn right debt-button claims-hide-button" href="javascript: hide_all_claims()"><i class="mdi-navigation-expand-less right"></i>Geschlossene ausblenden</a>
+                        <ul class="collection claims">
+                        {% for claim in claims %}
+                            <li class="collection-item {{ claim.debt_status.status_ident }}">
+                                <div class="row">
+                                    <div class="col m4">{{ claim.debt_payer }}</div>
+                                    <div class="col m4">{{ claim.debt_purchasing.purchasing_date }}</div>
+                                    <div class="col m2">{{ claim.debt_value }}</div>
+                                    {% if claim.debt_status.status_ident == 'open' %}
+                                        <div class="col m1"><a id="claim_link_{{ claim.pk }}" class="btn-floating btn-small waves-effect waves-light" href="javascript: claim_paid({{ claim.pk }})"><i class="mdi-action-thumb-up small"></i></a></div>
+                                    {% else %}
+                                        <div class="col m1"><i class="mdi-navigation-check small green-text"></i></div>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {% if success == True %}
+        <script>
+            $(document).ready(function() {
+                Materialize.toast('Einkauf erfolgreich gespeichert', 10000, 'alert-success');
+            });
+        </script>
+    {% endif %}
+{% endblock %}

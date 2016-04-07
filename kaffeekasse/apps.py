@@ -3,5 +3,5 @@ from __future__ import unicode_literals
 from django.apps import AppConfig
 
 
-class OfficecloudtoolswebConfig(AppConfig):
-    name = 'OfficeCloudToolsWeb'
+class KaffeekasseConfig(AppConfig):
+    name = 'kaffeekasse'
