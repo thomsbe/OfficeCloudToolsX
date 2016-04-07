@@ -13,3 +13,50 @@
 #id_debt_count_container {
     display: none;
 }
+
+.collection .row {
+    margin-bottom: 0;
+}
+
+.collection [class^="mdi-"],
+.collection [class*="mdi-"] {
+    line-height: 35px;
+}
+
+.claims .col.m4,
+.claims .col.m2 {
+    margin-top: 10px;
+}
+
+.collection-item.closed {
+    display: none;
+}
+
+.collection-item .closed {
+    color: #e53935;
+}
+
+.collection-item .open {
+    color: #00e676;
+}
+
+.debt-button {
+    position: absolute;
+    right: 20px;
+    bottom: 15px;
+}
+
+.debts,
+.claims {
+    margin-bottom: 30px;
+}
+
+.claims-hide-button,
+.debt-hide-button {
+    display: none;
+}
+
+.claim-card,
+.debt-card {
+    max-height: 100%;
+}

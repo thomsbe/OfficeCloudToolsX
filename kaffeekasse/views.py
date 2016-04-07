@@ -1,11 +1,14 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import JsonResponse
 
 from kaffeekasse.models import *
 from .forms import PurchasingForm
 
 # Create your views here.
 def kaffeekasse(request):
+    # get debts
+    all_debts = Debt.objects.all().filter(debt_payer=request.user.officeuser)
+
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -47,9 +50,36 @@ def kaffeekasse(request):
                 debt.debt_status = status
                 debt.save()
 
+            # get all claims
+            all_claims = Debt.objects.all().filter(debt_creditor=request.user.officeuser)
+
             # redirect to a new URL:
-            return render(request, 'kaffeekasse.html', {'form' : form, 'success' : True})
+            return render(request, 'kaffeekasse.html', {'form' : form, 'success' : True, 'debts': all_debts, 'claims': all_claims})
     # if a GET (or any other method) we'll create a blank form
     else:
+        # get all claims
+        all_claims = Debt.objects.all().filter(debt_creditor=request.user.officeuser)
         form = PurchasingForm()
-    return render(request, 'kaffeekasse.html', {'form' : form, 'success' : False})
+    return render(request, 'kaffeekasse.html', {'form' : form, 'success' : False, 'debts': all_debts, 'claims': all_claims})
+
+def claim_paid(request):
+    id = request.POST['id']
+    claim = Debt.objects.get(pk=id)
+
+    # check if user who sent request is creditor
+    if claim.debt_creditor != request.user.officeuser:
+        msg = 'Fehler: falscher Benutzer'
+        success = False
+    else:
+        status = DebtStatus.objects.get(status_ident='closed')
+        claim.debt_status = status
+        claim.save()
+        msg = 'Forderung geschlossen'
+        success = True
+
+    response_data = {}
+    response_data['msg'] = msg
+    response_data['id'] = id
+    response_data['success'] = success
+
+    return JsonResponse(response_data)
